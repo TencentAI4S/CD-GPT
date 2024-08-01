@@ -53,7 +53,7 @@ CD-GPT achieves SOTA performance on a series of downstream tasks.
 
 | Model | CD-GPT-1b-s | Transformer | LSTM  | CNN | ResNet | ProtBERT | ESM   |
 | ----- | ----------- | ----------- | ----- | --- | ------ | -------- | ----- |
-| P@l/5  | 57.29       | 17.5        | 26.34 | 10  | 20.43  | 39.66    | 45.78 |
+| P@L/5  | 57.29       | 17.5        | 26.34 | 10  | 20.43  | 39.66    | 45.78 |
 
 ### RNA Protein Interaction Prediction
 
