@@ -27,8 +27,8 @@ def symmetrize(x):
 
 
 class ResiduePairPredictionHead(nn.Module):
-    """Performs symmetrization, apc, and computes a logistic regression on the output features"""
-
+    """Head for residule pair level classification tasks."""
+    
     def __init__(
             self,
             dim: int,
@@ -59,7 +59,7 @@ class ResiduePairPredictionHead(nn.Module):
 
 
 class TokenPredictionHead(nn.Module):
-    """Head for token-level classification tasks."""
+    """Head for token level classification tasks."""
 
     def __init__(self, dim, num_classes=2, dropout=0.0, num_heads=None, max_len=None, eps=None):
         super().__init__()
@@ -112,6 +112,8 @@ class TokenPredictionHead(nn.Module):
 
 
 class SequencePredictionHead(nn.Module):
+    """Head for sequence level classification tasks."""
+
     def __init__(self, dim, num_classes=2, dropout=0.0):
         super().__init__()
         self.num_layers = 1

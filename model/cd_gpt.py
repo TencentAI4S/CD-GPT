@@ -234,6 +234,17 @@ class CDGPT(nn.Module):
 
 
 class CDGPTSequencePrediction(CDGPT):
+
+    @classmethod
+    def from_config(cls, cfg):
+        pad_id = cfg.tokenizer.pad_id
+        num_classes = cfg.model.num_classes
+        return {
+            "num_classes": num_classes,
+            "pad_id": pad_id,
+            **super().from_config(cfg)
+        }
+    
     def __init__(self,
                  num_classes: int,
                  vocab_size: int,
@@ -243,13 +254,12 @@ class CDGPTSequencePrediction(CDGPT):
                  num_heads: int = 24,
                  bias=False,
                  eps=1e-5,
-                 pad_id=None,
+                 pad_id=2,
                  dropout=0.0):
         super().__init__(vocab_size, max_len, embedding_dim, num_layers, num_heads, bias, eps, include_head=False)
         self.num_classes = num_classes
         self.pad_id = pad_id
         self.dropout = dropout
-        # self.cls_head = nn.Linear(self.embedding_dim, self.num_classes, bias=bias)
         self.cls_head = SequencePredictionHead(self.embedding_dim, self.num_classes, self.dropout)
 
     def forward(self,
@@ -270,6 +280,17 @@ class CDGPTSequencePrediction(CDGPT):
 
 
 class CDGPTTokenPrediction(CDGPT):
+
+    @classmethod
+    def from_config(cls, cfg):
+        pad_id = cfg.tokenizer.pad_id
+        num_classes = cfg.model.num_classes
+        return {
+            "num_classes": num_classes,
+            "pad_id": pad_id,
+            **super().from_config(cfg)
+        }
+    
     def __init__(self,
                  num_classes,
                  vocab_size: int,
@@ -323,6 +344,17 @@ class CDGPTTokenPrediction(CDGPT):
 
 
 class CDGPTResiduePairPrediction(CDGPT):
+
+    @classmethod
+    def from_config(cls, cfg):
+        pad_id = cfg.tokenizer.pad_id
+        num_classes = cfg.model.num_classes
+        return {
+            "num_classes": num_classes,
+            "pad_id": pad_id,
+            **super().from_config(cfg)
+        }
+    
     def __init__(self,
                  num_classes,
                  vocab_size: int,
@@ -332,7 +364,7 @@ class CDGPTResiduePairPrediction(CDGPT):
                  num_heads: int = 24,
                  bias=True,
                  eps=1e-5,
-                 pad_id=None,
+                 pad_id=2,
                  ):
         super().__init__(vocab_size=vocab_size,
                          max_len=max_len,

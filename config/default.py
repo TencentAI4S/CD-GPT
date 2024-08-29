@@ -9,13 +9,14 @@ _C.tokenizer = CN()
 _C.tokenizer.name = "sentencepiece"
 _C.tokenizer.path = ""
 _C.tokenizer.vocab_size = 64000
+_C.tokenizer.pad_id = 2
 # -------------------------------model-------------------------#
 _C.model = CN()
 _C.model.type = "cdgpt-1b"
-_C.model.num_layers = 6
+_C.model.num_layers = 12
 _C.model.num_kv_heads = None
-_C.model.num_heads = 6
-_C.model.num_hiddens = 768
+_C.model.num_heads = 24
+_C.model.num_hiddens = 2304
 _C.model.dropout = 0.
 _C.model.bias = False
 _C.model.num_classes = 1
