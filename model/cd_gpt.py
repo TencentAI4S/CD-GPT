@@ -242,7 +242,7 @@ class CDGPTSequencePrediction(CDGPT):
             "pad_id": pad_id,
             **super().from_config(cfg)
         }
-    
+
     @configurable
     def __init__(self,
                  num_classes: int,
@@ -289,7 +289,7 @@ class CDGPTTokenPrediction(CDGPT):
             "pad_id": pad_id,
             **super().from_config(cfg)
         }
-    
+
     @configurable
     def __init__(self,
                  num_classes,
@@ -354,7 +354,7 @@ class CDGPTResiduePairPrediction(CDGPT):
             "pad_id": pad_id,
             **super().from_config(cfg)
         }
-    
+
     @configurable
     def __init__(self,
                  num_classes,

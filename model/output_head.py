@@ -22,7 +22,7 @@ def apc(x):
 
 
 def symmetrize(x):
-    "Make layer symmetric in final two dimensions, used for contact prediction."
+    """Make layer symmetric in final two dimensions, used for contact prediction."""
     return x + x.transpose(-1, -2)
 
 
