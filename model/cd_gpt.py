@@ -111,9 +111,7 @@ class CDGPT(nn.Module):
         )
 
     def _forward_embedding_impl(self, input_ids):
-        # print(input_ids)
         x = self.transformer.wte(input_ids)  # [bs, seq_len, hidden_dim]
-        # print(x)
         return x
 
     def _forward_head_impl(self, x):
@@ -245,6 +243,7 @@ class CDGPTSequencePrediction(CDGPT):
             **super().from_config(cfg)
         }
     
+    @configurable
     def __init__(self,
                  num_classes: int,
                  vocab_size: int,
@@ -291,6 +290,7 @@ class CDGPTTokenPrediction(CDGPT):
             **super().from_config(cfg)
         }
     
+    @configurable
     def __init__(self,
                  num_classes,
                  vocab_size: int,
@@ -355,6 +355,7 @@ class CDGPTResiduePairPrediction(CDGPT):
             **super().from_config(cfg)
         }
     
+    @configurable
     def __init__(self,
                  num_classes,
                  vocab_size: int,
@@ -376,7 +377,7 @@ class CDGPTResiduePairPrediction(CDGPT):
                          include_head=True,
                          pad_id=pad_id)
         self.num_classes = num_classes
-        self.contact_head = ResiduePairPredictionHead(self.embedding_dim, self.num_classes, bias)
+        self.contact_head = ResiduePairPredictionHead(num_heads * num_layers, self.num_classes, bias)
 
     def forward(self, token_ids, pos_ids=None, attention_mask=None):
         bs, seq_len = token_ids.shape
@@ -394,16 +395,19 @@ class CDGPTResiduePairPrediction(CDGPT):
             attention_mask = self.attention_mask[:, :, :seq_len, :seq_len]
 
         x = self._forward_embedding_impl(token_ids)
+        attn_weights = []
         for block in self.transformer.h:
             if self.activation_checkpoint:
                 x, _, attn = self.activation_checkpoint_func(block, x, rope, attention_mask, None, None, True)
             else:
                 x, _, attn = block(x, rope, attn_mask=attention_mask, need_attn=True)
+            attn_weights.append(attn)
         x = self.transformer.ln_f(x)
         logits = self.lm_head(x)
         result = {}
-        attn = attn.unsqueeze(1)
-        contact = self.contact_head(attn)
+        # stack attentions 
+        attentions = torch.stack(attn_weights, 1)
+        contact = self.contact_head(attentions)
         result["output"] = contact
         result["logits"] = logits
 

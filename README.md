@@ -96,9 +96,8 @@ mkdir checkpoints
 ```
 ### Generation
 
-```shell
-python generate_example.py -m checkpoints/CD-GPT-1b.pth -t checkpoints/tokenizer.model
-```
+For generation purposes like translation or reverse translation, you can refer to `generate_examply.ipynb` for guidance.
+
 ### Prediction
 
 Equipped with output heads, CD-GPT can be applied to different types of downstream tasks. Currently released checkpoints **do not** include the weight of output head, so the output would be a random guess.

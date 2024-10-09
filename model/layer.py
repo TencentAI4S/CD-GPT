@@ -56,8 +56,8 @@ class RMSNorm(nn.Module):
         else:
             return mixed_dtype_fused_rms_norm_affine(input, self.weight, self.normalized_shape, self.eps)
 
-    def extra_repr(self):
-        return "{normalized_shape}, eps={eps}, " "elementwise_affine={elementwise_affine}".format(**self.__dict__)
+    # def extra_repr(self):
+    #     return "{normalized_shape}, eps={eps}, " "elementwise_affine={elementwise_affine}".format(**self.__dict__)
 
 
 def precompute_freqs_cis(seq_len: int,
@@ -158,8 +158,6 @@ class SwiGLU(nn.Module):
         self.c_proj = nn.Linear(hidden_dim, dim, bias=bias)
 
     def native_impl(self, x):
-        # TODO dimension error
-        print("x shape", x.shape)
         if self.pack_fc:
             x1, x2 = torch.chunk(self.c_fc(x), 2, dim=2)
             x = F.silu(x1) * x2

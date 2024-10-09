@@ -39,15 +39,15 @@ class ResiduePairPredictionHead(nn.Module):
         self.dim = dim
         # self.dropout = nn.Dropout(dropout)
         self.relu = nn.ReLU()
-        self.fusion = nn.Linear(dim, 64, bias)
-        self.linear = nn.Linear(64, num_classes, bias)
+        self.fusion = nn.Linear(dim, 64, bias=bias)
+        self.linear = nn.Linear(64, num_classes, bias=bias)
         self.activation = nn.Softmax(dim=-1)
         self.eps = 1e-6
 
     def forward(self, attentions, causal=True, seq_mask=None):
         """
         Args:
-            attentions: [bs, num_layers, seq_len, seq_len]
+            attentions: [bs, num_layers, num_heads, seq_len, seq_len]
             seq_mask: [bs, seq_len]
         """
         batch_size, layers, heads, seqlen, _ = attentions.size()
@@ -55,7 +55,8 @@ class ResiduePairPredictionHead(nn.Module):
         attentions = self.relu(self.fusion(attentions.permute(0, 2, 3, 1))).permute(0, 3, 1, 2)
         attentions = apc(symmetrize(attentions))
         attentions = attentions.permute(0, 2, 3, 1)
-        return self.activation(self.linear(attentions).squeeze(3))  # [bs, seq_len, seq_len, 2]
+        output = self.activation(self.linear(attentions).squeeze(3))  # [bs, seq_len, seq_len, 2]
+        return output
 
 
 class TokenPredictionHead(nn.Module):

@@ -96,9 +96,7 @@ pip install -r requirements.txt
 mkdir checkpoints
 ```
 ### 生成任务
-```shell
-python example.py -m checkpoints/CD-GPT-1b.pth -t checkpoints/tokenizer.model
-```
+若想使用CD-GPT完成生成任务，如翻译或逆翻译，请参照`generate_examply.ipynb` 。
 ### 预测任务
 
 搭配输出头，CD-GPT可以应用于不同类型的下游任务。目前我们发布的模型不包括输出头的权重，因此下列实例的输出结果是随机的。
