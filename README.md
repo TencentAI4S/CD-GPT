@@ -18,10 +18,11 @@ This repo contains the code and models for "[CD-GPT: A Biological Foundation Mod
 
 We have released the following checkpoints:
 
-| Checkpoint | Description                                                                                                                       |
-| :---------: | --------------------------------------------------------------------------------------------------------------------------------- |
-|  CD-GPT-1b  | Model pretrained through Stage 1 (_Mono-sequence Pretrain_) and Stage 2 (_Central Dogma Pretrain_)                                      |
-| CD-GPT-1b-s | Model pretrained through Stage 1 (_Mono-sequence Pretrain_), Stage 2 (_Central Dogma Pretrain_) and Stage 3 (_Protein Structure Pretrain_) |
+|          Checkpoint           | Description                                                                                                                                |
+| :---------------------------: | ------------------------------------------------------------------------------------------------------------------------------------------ |
+|           CD-GPT-1b           | Model pretrained through Stage 1 (_Mono-sequence Pretrain_) and Stage 2 (_Central Dogma Pretrain_).                                         |
+|          CD-GPT-1b-s          | Model pretrained through Stage 1 (_Mono-sequence Pretrain_), Stage 2 (_Central Dogma Pretrain_) and Stage 3 (_Protein Structure Pretrain_). |
+| CD-GPT-1b-reverse-translation | Model finetuned on translation-related pair sequences. Can be used to generate codon sequence from protein. |
 
 You can download the weights from:
 - [Tencent Weiyun Disk](https://share.weiyun.com/LpRbEEH4)
