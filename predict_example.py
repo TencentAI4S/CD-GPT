@@ -43,11 +43,11 @@ def main(args):
         model = CDGPTResiduePairPrediction(cfg)
     model.load_state_dict(state["model"], strict=False)
     print(f"load checkpoint form: {model_path}")
-    # model.half().cuda().eval()
+    model.half().cuda().eval()
 
     input_sequence = "KALTARQQEVFDLIRDHISQTGMPPTRAEIAQRLGFRSPNAAEEHLKALARKGVIEIVSGASRGIRLLQEE"
     
-    x = tokenizer.encode(input_sequence, eos=False, device=model.device) if output_head == 'sequence' else tokenizer.encode_token(input_sequence, eos=False) #, device=model.device)
+    x = tokenizer.encode(input_sequence, eos=False, device=model.device) if output_head == 'sequence' else tokenizer.encode_token(input_sequence, eos=False, device=model.device)
     x = x.unsqueeze(0)
     output = model(x)["output"]
     print(output)
