@@ -10,13 +10,12 @@ from config import get_config
 from model import CDGPTResiduePairPrediction, CDGPTTokenPrediction, CDGPTSequencePrediction
 from tokenizer import SentencePieceTokenizer
 
-
 def parse_args():
     parser = argparse.ArgumentParser(description='CD-GPT model prediction')
-    parser.add_argument('--model', '-m', default="checkpoints/CD-GPT-1b.pth", help='model checkpoint path')
-    parser.add_argument('--tokenizer', '-t', default="checkpoints/tokenizer.model", help='tokenizer path')
-    parser.add_argument('--head', '-h', default="sequence", help='output head type, must be sequence, token or residuepair')
-    parser.add_argument('--num_classes', '-n', default=2, help="number of prediction categories")
+    parser.add_argument('--model', default="checkpoints/CD-GPT-1b.pth", help='model checkpoint path')
+    parser.add_argument('--tokenizer', default="checkpoints/tokenizer.model", help='tokenizer path')
+    parser.add_argument('--head', default="sequence", choices=['sequence', 'token', 'residuepair'], help='output head type, must be sequence, token or residuepair')
+    parser.add_argument('--num_classes', default=2, type=int, help="number of prediction categories")
     args = parser.parse_args()
     return args
 
@@ -42,13 +41,14 @@ def main(args):
         model = CDGPTTokenPrediction(cfg)
     else:
         model = CDGPTResiduePairPrediction(cfg)
-    model.load_state_dict(state["model"])
+    model.load_state_dict(state["model"], strict=False)
     print(f"load checkpoint form: {model_path}")
-    model.half().cuda().eval()
+    # model.half().cuda().eval()
 
     input_sequence = "KALTARQQEVFDLIRDHISQTGMPPTRAEIAQRLGFRSPNAAEEHLKALARKGVIEIVSGASRGIRLLQEE"
     
-    x = tokenizer.encode(input_sequence, eos=False, device=model.device) if output_head == 'sequence' else tokenizer.encode_token(input_sequence, eos=False, device=model.device)
+    x = tokenizer.encode(input_sequence, eos=False, device=model.device) if output_head == 'sequence' else tokenizer.encode_token(input_sequence, eos=False) #, device=model.device)
+    x = x.unsqueeze(0)
     output = model(x)["output"]
     print(output)
     

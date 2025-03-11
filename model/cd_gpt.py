@@ -267,10 +267,10 @@ class CDGPTSequencePrediction(CDGPT):
                 pos_ids: Optional[torch.Tensor] = None):
         hiddens = super().forward(input_ids, attention_mask, pos_ids)
         result = {}
-        if self.pad_token_id is None:
+        if self.pad_id is None:
             sequence_lengths = -1  # last token for classification or regression
         else:
-            sequence_lengths = torch.ne(input_ids, self.pad_token_id).sum(-1) - 1
+            sequence_lengths = torch.ne(input_ids, self.pad_id).sum(-1) - 1
         batch_size = hiddens.shape[0]
         hiddens = hiddens[torch.arange(batch_size, device=hiddens.device), sequence_lengths]
         res = self.cls_head(hiddens)

@@ -105,28 +105,28 @@ mkdir checkpoints
 **序列预测任务**
 ```shell
 python predict_example.py \
-    -m checkpoints/CD-GPT-1b.pth \
-    -t checkpoints/tokenizer.model \
-    -h sequence \
-    -n 2
+    --model checkpoints/CD-GPT-1b.pth \
+    --tokenizer checkpoints/tokenizer.model \
+    --head sequence \
+    --num_classes 2
 ```
 
 **残基预测任务**
 ```shell
 python predict_example.py \
-    -m checkpoints/CD-GPT-1b.pth \
-    -t checkpoints/tokenizer.model \
-    -h token \
-    -n 2
+    -model checkpoints/CD-GPT-1b.pth \
+    --tokenizer checkpoints/tokenizer.model \
+    --head token \
+    --num_classes 2
 ```
 
 **残基对预测任务**
 ```shell
 python predict_example.py \
-    -m checkpoints/CD-GPT-1b.pth \
-    -t checkpoints/tokenizer.model \
-    -h residuepair \
-    -n 2
+    -model checkpoints/CD-GPT-1b.pth \
+    --tokenizer checkpoints/tokenizer.model \
+    --head residuepair \
+    --num_classes 2
 ```
 
 ## 微调CD-GPT

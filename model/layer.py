@@ -246,7 +246,6 @@ class CasualSelfAttention(nn.Module):
             # causal mask to ensure that attention is only applied to the left in the input sequence
             if attn_mask is None:
                 attn_mask = torch.tril(torch.ones(T, T, dtype=scores.dtype, device=scores.device)).view(1, 1, T, T)
-            # attn_mask = torch.ones(T, T, dtype=scores.dtype, device=scores.device).view(1, 1, T, T)
             scores = scores.masked_fill(attn_mask == 0, float('-inf'))
             scores = F.softmax(scores.float(), dim=-1).type_as(q)
             y = scores @ v
@@ -273,7 +272,6 @@ class CasualSelfAttention(nn.Module):
             k = cache_k.index_copy(2, pos_ids, k)
             v = cache_v.index_copy(2, pos_ids, v)
             kv_cache = k, v
-
         y, scores = self._scaled_dot_product_attention(q, k, v, attn_mask=attn_mask, need_attn=need_attn)
         y = y.transpose(1, 2).contiguous().view(*x.shape)
         y = self.c_proj(y)

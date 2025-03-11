@@ -86,23 +86,13 @@ class TokenPredictionHead(nn.Module):
             device=device
         )
 
-    def _make_attn_mask(self, device):
-        """
-        Args:
-            input_ids: [bs, seq_len]
-        """
-        ones = torch.ones((self.max_len, self.max_len), dtype=torch.bool, device=device)
-        return ones[None, None]
-
     def forward(self, features):
         # [B, T, C]
         x = features
         self.rope_cache = self._make_rope_mask(x.device, x.dtype)
         rope = self.rope_cache[:x.shape[1]]
-        if self.attn_mask is None:
-            self.attn_mask = self._make_attn_mask(x.device)
         for layer in self.transformer:
-            x, _, _ = layer(x, rope, attn_mask=self.attn_mask)
+            x, _, _ = layer(x, rope, attn_mask=self.attn_mask, need_attn=True)
         x = self.dropout(x)
         x = self.dense(x)
         x = torch.tanh(x)
@@ -120,6 +110,7 @@ class SequencePredictionHead(nn.Module):
         self.num_layers = 1
         self.dense = nn.Linear(dim, dim)
         self.dropout = nn.Dropout(dropout) if dropout > 0 else nn.Identity()
+
         self.out_proj = nn.Linear(dim, num_classes)
 
     def forward(self, features):

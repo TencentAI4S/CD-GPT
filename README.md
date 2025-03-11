@@ -103,32 +103,31 @@ For generation purposes like translation or reverse translation, you can refer t
 
 Equipped with output heads, CD-GPT can be applied to different types of downstream tasks. Currently released checkpoints **do not** include the weight of output head, so the output would be a random guess.
 
-
 **Sequence Prediction Task**
 ```shell
 python predict_example.py \
-    -m checkpoints/CD-GPT-1b.pth \
-    -t checkpoints/tokenizer.model \
-    -h sequence \
-    -n 2
+    --model checkpoints/CD-GPT-1b.pth \
+    --tokenizer checkpoints/tokenizer.model \
+    --head sequence \
+    --num_classes 2
 ```
 
 **Token Prediction Task**
 ```shell
 python predict_example.py \
-    -m checkpoints/CD-GPT-1b.pth \
-    -t checkpoints/tokenizer.model \
-    -h token \
-    -n 2
+    -model checkpoints/CD-GPT-1b.pth \
+    --tokenizer checkpoints/tokenizer.model \
+    --head token \
+    --num_classes 2
 ```
 
 **Residue-Pair Prediction Task**
 ```shell
 python predict_example.py \
-    -m checkpoints/CD-GPT-1b.pth \
-    -t checkpoints/tokenizer.model \
-    -h residuepair \
-    -n 2
+    -model checkpoints/CD-GPT-1b.pth \
+    --tokenizer checkpoints/tokenizer.model \
+    --head residuepair \
+    --num_classes 2
 ```
 
 ## Finetune CD-GPT on your own datasets
